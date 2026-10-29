@@ -426,7 +426,7 @@ export interface DramaboxPerformerParams {
 
 export type DramaboxRankResponse = CrawloraResponse<ModelDramaboxRankResponseDoc>;
 export interface DramaboxRankParams {
-  "rank_type"?: "1" | "2" | "3";
+  "rank_type"?: 1 | 2 | 3;
 }
 
 export type DramaboxRecommendResponse = CrawloraResponse<ModelDramaboxRecommendResponseDoc>;
@@ -439,7 +439,7 @@ export interface DramaboxSearchParams {
   "keyword": string;
   "page"?: number;
   "limit"?: number;
-  "sort"?: "1" | "2" | "3";
+  "sort"?: 1 | 2 | 3;
 }
 
 export type DramaboxSuggestResponse = CrawloraResponse<ModelDramaboxSuggestResponseDoc>;
