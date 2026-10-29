@@ -1,0 +1,2256 @@
+{
+  "basePath": "/api/v1",
+  "definitions": {
+    "app.Response": {
+      "description": "The Response struct is used for wrapping the API response with a code, message, and data.",
+      "properties": {
+        "code": {
+          "description": "Code is the HTTP status code or a custom code used to indicate the result of the request\n@example 200",
+          "type": "integer"
+        },
+        "data": {
+          "description": "Data is the response data (can be any object or null)\n@example {\"id\": 1, \"name\": \"John Doe\"}"
+        },
+        "msg": {
+          "description": "Msg is the message that describes the result of the request\n@example \"Request successful\""
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.AppTagRef": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.AppTitle": {
+      "properties": {
+        "cover_url": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "episodes": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "string"
+        },
+        "in_library": {
+          "description": "InLibrary is always false for the shared guest session.",
+          "type": "boolean"
+        },
+        "play_count": {
+          "description": "PlayCount is the app's displayed play count where the route carries it.",
+          "type": "integer"
+        },
+        "protagonist": {
+          "description": "Protagonist lists the cast names as the app prints them.",
+          "type": "string"
+        },
+        "shelf_time": {
+          "description": "ShelfTime is the app's listing time as printed (\"2026-09-27 16:42:18\").",
+          "type": "string"
+        },
+        "shelf_time_ms": {
+          "description": "ShelfTimeMS is the same listing time as Unix milliseconds.",
+          "type": "integer"
+        },
+        "tag_refs": {
+          "description": "TagRefs pairs each tag with its id; pass an id to dramabox-tag.",
+          "items": {
+            "$ref": "#/definitions/dramabox.AppTagRef"
+          },
+          "type": "array"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "description": "URL is the public DramaBox website page for the title.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.Book": {
+      "properties": {
+        "cover_url": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "episodes": {
+          "type": "integer"
+        },
+        "follows": {
+          "type": "integer"
+        },
+        "genres": {
+          "items": {
+            "$ref": "#/definitions/dramabox.Genre"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "listed_at": {
+          "description": "ListedAt is the site's first-listing timestamp as printed\n(\"2026-10-24 10:00:00\"); its time zone is not stated by the site.",
+          "type": "string"
+        },
+        "rating": {
+          "type": "number"
+        },
+        "status": {
+          "description": "Status is the site's update label, for example \"Completed\".",
+          "type": "string"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "views_display": {
+          "description": "ViewsDisplay is the view count as the site prints it (\"15.6K\"); it is\nempty where the list does not carry one.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.BrowseResponse": {
+      "properties": {
+        "books": {
+          "items": {
+            "$ref": "#/definitions/dramabox.Book"
+          },
+          "type": "array"
+        },
+        "genre_id": {
+          "type": "integer"
+        },
+        "genre_name": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "total_pages": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.CategoriesResponse": {
+      "properties": {
+        "groups": {
+          "items": {
+            "$ref": "#/definitions/dramabox.CategoryGroup"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.CategoryBooksResponse": {
+      "properties": {
+        "has_more": {
+          "type": "boolean"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "titles": {
+          "items": {
+            "$ref": "#/definitions/dramabox.AppTitle"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.CategoryGroup": {
+      "properties": {
+        "key": {
+          "description": "Key is language, production, dub, genre_1, genre_2 or sort.",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/definitions/dramabox.CategoryOption"
+          },
+          "type": "array"
+        },
+        "row": {
+          "description": "Row is the genre row index for the two type-4 groups (0 then 1). It is\nzero/omitted for every other group.",
+          "type": "integer"
+        },
+        "type": {
+          "description": "Type is the upstream classify type id (1, 6, 2, 4, 4, 5 respectively,\nin the order above).",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.CategoryOption": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.Channel": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.ChannelsResponse": {
+      "properties": {
+        "channels": {
+          "items": {
+            "$ref": "#/definitions/dramabox.Channel"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.DramaResponse": {
+      "properties": {
+        "available_languages": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "cover_url": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "episode_count": {
+          "type": "integer"
+        },
+        "episodes": {
+          "items": {
+            "$ref": "#/definitions/dramabox.Episode"
+          },
+          "type": "array"
+        },
+        "follows": {
+          "type": "integer"
+        },
+        "genres": {
+          "items": {
+            "$ref": "#/definitions/dramabox.Genre"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "listed_at": {
+          "type": "string"
+        },
+        "related": {
+          "items": {
+            "$ref": "#/definitions/dramabox.Book"
+          },
+          "type": "array"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "title": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "views": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.Episode": {
+      "properties": {
+        "duration_ms": {
+          "type": "integer"
+        },
+        "free": {
+          "description": "Free is true for episodes the site unlocks without payment.",
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "number": {
+          "description": "Number is the 1-based episode number.",
+          "type": "integer"
+        },
+        "thumbnail_url": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.Genre": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.GenresResponse": {
+      "properties": {
+        "genres": {
+          "items": {
+            "$ref": "#/definitions/dramabox.Genre"
+          },
+          "type": "array"
+        },
+        "language": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.HomeResponse": {
+      "properties": {
+        "featured": {
+          "items": {
+            "$ref": "#/definitions/dramabox.Book"
+          },
+          "type": "array"
+        },
+        "language": {
+          "type": "string"
+        },
+        "shelves": {
+          "items": {
+            "$ref": "#/definitions/dramabox.Shelf"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.MoreResponse": {
+      "properties": {
+        "books": {
+          "items": {
+            "$ref": "#/definitions/dramabox.Book"
+          },
+          "type": "array"
+        },
+        "language": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "position": {
+          "type": "string"
+        },
+        "total_pages": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.PerformerResponse": {
+      "properties": {
+        "avatar": {
+          "type": "string"
+        },
+        "followed": {
+          "type": "boolean"
+        },
+        "gender": {
+          "type": "integer"
+        },
+        "has_more": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "titles": {
+          "items": {
+            "$ref": "#/definitions/dramabox.AppTitle"
+          },
+          "type": "array"
+        },
+        "video_count": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.RankMeta": {
+      "properties": {
+        "hot_code": {
+          "type": "string"
+        },
+        "sort": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.RankResponse": {
+      "properties": {
+        "rank_type": {
+          "description": "RankType echoes the requested tab; 0 means the default tab was used.",
+          "type": "integer"
+        },
+        "tabs": {
+          "description": "Tabs are the ranking tabs the app API offers; pass a tab's type as\nrank_type to read that list.",
+          "items": {
+            "$ref": "#/definitions/dramabox.RankTab"
+          },
+          "type": "array"
+        },
+        "titles": {
+          "description": "Titles holds the ranking list (fixed at 20 titles upstream).",
+          "items": {
+            "$ref": "#/definitions/dramabox.RankedTitle"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.RankTab": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "description": "Type is the value to pass as rank_type.",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.RankedTitle": {
+      "properties": {
+        "cover_url": {
+          "type": "string"
+        },
+        "data_from": {
+          "description": "DataFrom is the app's recommendation-source label.",
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "episodes": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "string"
+        },
+        "in_library": {
+          "description": "InLibrary reports whether the title is in the caller's library, which\nfor a guest session is always false.",
+          "type": "boolean"
+        },
+        "position": {
+          "description": "Position is the title's ordinal in the ranking (1-based).",
+          "type": "integer"
+        },
+        "protagonist": {
+          "description": "Protagonist lists the cast names as the app prints them.",
+          "type": "string"
+        },
+        "rank": {
+          "$ref": "#/definitions/dramabox.RankMeta"
+        },
+        "shelf_time": {
+          "description": "ShelfTime is the app's listing time as printed (\"2026-09-27 16:42:18\").",
+          "type": "string"
+        },
+        "shelf_time_ms": {
+          "description": "ShelfTimeMS is the same listing time as Unix milliseconds.",
+          "type": "integer"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "description": "URL is the public DramaBox website page for the title.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.RecommendResponse": {
+      "properties": {
+        "has_more": {
+          "type": "boolean"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "page_size": {
+          "description": "PageSize is the upstream page size (the route takes no page-size\nparameter, so callers cannot choose it).",
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "titles": {
+          "items": {
+            "$ref": "#/definitions/dramabox.AppTitle"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.SearchPerson": {
+      "properties": {
+        "avatar": {
+          "description": "Avatar is the performer image URL the app serves (jpg); it is catalogue\nartwork, not playable media.",
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "videos": {
+          "description": "Videos is the number of series the performer appears in.",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.SearchResponse": {
+      "properties": {
+        "is_more": {
+          "description": "HasMore is the answer's isMore flag (the app API's totalSize is not\nusable: it answers 0 even when more pages exist).",
+          "type": "boolean"
+        },
+        "keyword": {
+          "description": "Keyword echoes the normalized keyword that was searched.",
+          "type": "string"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "people": {
+          "description": "People holds the performer rows.",
+          "items": {
+            "$ref": "#/definitions/dramabox.SearchPerson"
+          },
+          "type": "array"
+        },
+        "titles": {
+          "description": "Titles holds the book rows.",
+          "items": {
+            "$ref": "#/definitions/dramabox.AppTitle"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.Shelf": {
+      "properties": {
+        "books": {
+          "items": {
+            "$ref": "#/definitions/dramabox.Book"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "position": {
+          "description": "Position is the dramabox-more position that lists this shelf in full:\ntrending, must-sees or hidden-gems; empty for an unknown shelf.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.SuggestItem": {
+      "properties": {
+        "avatar": {
+          "description": "Avatar is the performer image (jpg) for kind \"actor\".",
+          "type": "string"
+        },
+        "cover_url": {
+          "description": "CoverURL is the book cover image (jpg) for kind \"book\".",
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "videos": {
+          "description": "Videos is the performer's series count for kind \"actor\".",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.SuggestResponse": {
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/definitions/dramabox.SuggestItem"
+          },
+          "type": "array"
+        },
+        "keyword": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.TagResponse": {
+      "properties": {
+        "has_more": {
+          "type": "boolean"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "tag_id": {
+          "type": "integer"
+        },
+        "tag_name": {
+          "type": "string"
+        },
+        "titles": {
+          "items": {
+            "$ref": "#/definitions/dramabox.AppTitle"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.TheaterBanner": {
+      "properties": {
+        "image_url": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "title_id": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.TheaterResponse": {
+      "properties": {
+        "banners": {
+          "items": {
+            "$ref": "#/definitions/dramabox.TheaterBanner"
+          },
+          "type": "array"
+        },
+        "channel": {
+          "$ref": "#/definitions/dramabox.Channel"
+        },
+        "has_more": {
+          "description": "HasMore reports whether the recommendation block has another page.",
+          "type": "boolean"
+        },
+        "hot_words": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "sections": {
+          "items": {
+            "$ref": "#/definitions/dramabox.TheaterSection"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.TheaterSection": {
+      "properties": {
+        "style": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "titles": {
+          "items": {
+            "$ref": "#/definitions/dramabox.AppTitle"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.TrendingResponse": {
+      "properties": {
+        "hot": {
+          "items": {
+            "$ref": "#/definitions/dramabox.AppTitle"
+          },
+          "type": "array"
+        },
+        "new_releases": {
+          "description": "NewReleases is the app's new-release list.",
+          "items": {
+            "$ref": "#/definitions/dramabox.AppTitle"
+          },
+          "type": "array"
+        },
+        "preset_keyword": {
+          "description": "PresetKeyword is the word the app pre-fills in its search box.",
+          "type": "string"
+        },
+        "rank_tabs": {
+          "description": "RankTabs are the ranking tabs; a tab's type is a valid rank_type for\ndramabox-rank.",
+          "items": {
+            "$ref": "#/definitions/dramabox.RankTab"
+          },
+          "type": "array"
+        },
+        "trending": {
+          "description": "Trending is the app's trending list.",
+          "items": {
+            "$ref": "#/definitions/dramabox.AppTitle"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.browseResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.BrowseResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.categoriesResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.CategoriesResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.categoryBooksResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.CategoryBooksResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.channelsResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.ChannelsResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.dramaResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.DramaResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.genresResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.GenresResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.homeResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.HomeResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.moreResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.MoreResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.performerResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.PerformerResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.rankResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.RankResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.recommendResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.RecommendResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.searchResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.SearchResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.suggestResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.SuggestResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.tagResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.TagResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.theaterResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.TheaterResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dramabox.trendingResponseDoc": {
+      "properties": {
+        "code": {
+          "example": 200,
+          "type": "integer"
+        },
+        "data": {
+          "$ref": "#/definitions/dramabox.TrendingResponse"
+        },
+        "msg": {
+          "example": "OK",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "host": "api.crawlora.net",
+  "info": {
+    "contact": {
+      "email": "support@crawlora.net",
+      "name": "API Support",
+      "url": "https://crawlora.net"
+    },
+    "description": "Crawlora is a hosted web-data and SERP API: call documented REST endpoints and get normalized JSON instead of HTML to parse — across search/SERP, maps and local, e-commerce, app stores, social, media and finance. One API key; Crawlora runs the proxy rotation, headless browsers and parsing behind the scenes. Billed pay-on-success: charged only on a successful 2xx response, 1-10 credits per call, with a free tier of 2,000 credits per month and no card. A hosted MCP server (mcp.crawlora.net/mcp) exposes the same catalog as agent tools. Search endpoints accept `q` as a universal alias for whichever search-term parameter they document (`query`, `term`, `keyword`, or Amazon's `k`), so one parameter name works across the whole catalog; an explicitly supplied documented name always wins.",
+    "license": {
+      "name": "Crawlora Terms of Service",
+      "url": "https://crawlora.net/terms"
+    },
+    "termsOfService": "https://crawlora.net/terms",
+    "title": "Crawlora API",
+    "version": "1.2",
+    "x-logo": {
+      "altText": "Crawlora",
+      "backgroundColor": "#FFFFFF",
+      "url": "https://raw.githubusercontent.com/Crawlora-org/crawlora-mcp/main/assets/logo-400x400.png"
+    }
+  },
+  "paths": {
+    "/dramabox/browse": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns one page of 12 DramaBox short dramas, optionally within one genre: id, title, description, cover, link, episode count, tags, genres, rating, update status and displayed views, with the page and total page count. Genre ids come from dramabox-genres. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-browse",
+        "parameters": [
+          {
+            "description": "Genre id from dramabox-genres; 0 or omitted browses all titles",
+            "in": "query",
+            "name": "genre_id",
+            "type": "integer",
+            "x-example": 161
+          },
+          {
+            "description": "Page number, 1 to 1000; defaults to 1. Each page holds 12 titles",
+            "in": "query",
+            "name": "page",
+            "type": "integer",
+            "x-example": 2
+          },
+          {
+            "description": "Site locale, one of: en, ko, zhHans, zh, es, ja, de, in, th, tl, pt, fr, ar, it (in is Indonesian); defaults to en. Each locale has its own title library",
+            "enum": [
+              "en",
+              "ko",
+              "zhHans",
+              "zh",
+              "es",
+              "ja",
+              "de",
+              "in",
+              "th",
+              "tl",
+              "pt",
+              "fr",
+              "ar",
+              "it"
+            ],
+            "in": "query",
+            "name": "language",
+            "type": "string",
+            "x-example": "ja"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.browseResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Browse DramaBox short dramas by genre",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/categories": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns the DramaBox app's category navigation as six groups: language, production type, dub mode, two genre rows (genre_1 and genre_2) and sort order. Each group lists the selectable options as display names and the values to pass to dramabox-category-books. The \"All\" pseudo-option is dropped because omitting a filter means all. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-categories",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.categoriesResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List DramaBox category filters",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/category-books": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns one page of 20 DramaBox short dramas from the app's category feed, optionally filtered by values from dramabox-categories: language, production type, dub mode, either genre row and sort order. Filters are ANDed; an omitted filter means all. Each title carries its id, title, description, cover, website link, episode count, tags with tag ids, protagonist, play count, library flag and listing times. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-category-books",
+        "parameters": [
+          {
+            "description": "Language/origin value from dramabox-categories' language group, e.g. 美国 (Local) or 中国 (Chinese)",
+            "in": "query",
+            "name": "language",
+            "type": "string",
+            "x-example": "美国"
+          },
+          {
+            "description": "Production-type value from dramabox-categories' production group: 3 (AI Drama), 1 (Live-Action), 2 (Anime)",
+            "enum": [
+              "3",
+              "1",
+              "2"
+            ],
+            "in": "query",
+            "name": "production",
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "description": "Dub-mode value from dramabox-categories' dub group: 1 (Dubbed), 0 (Subtitles Only)",
+            "enum": [
+              "1",
+              "0"
+            ],
+            "in": "query",
+            "name": "dub",
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "description": "Genre value from dramabox-categories' genre_1 group, e.g. 1357 (Romance) or 1361 (Strong Heroine)",
+            "in": "query",
+            "name": "genre",
+            "type": "string",
+            "x-example": "1357"
+          },
+          {
+            "description": "Genre value from dramabox-categories' genre_2 group, e.g. 1392 (Second Chance) or 1359 (BL); multi-tag values such as 1324,1362 are one value",
+            "in": "query",
+            "name": "genre_2",
+            "type": "string",
+            "x-example": "1392"
+          },
+          {
+            "description": "Sort value from dramabox-categories' sort group: 1 (Trending), 2 (Latest), 3 (Unwatched)",
+            "enum": [
+              "1",
+              "2",
+              "3"
+            ],
+            "in": "query",
+            "name": "sort",
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "description": "Page number, 1 to 1000; defaults to 1",
+            "in": "query",
+            "name": "page",
+            "type": "integer",
+            "x-example": 1
+          },
+          {
+            "description": "Titles per page, 1 to 50; defaults to 20",
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "x-example": 20
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.categoryBooksResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Browse DramaBox titles by category",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/channels": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns the 8 DramaBox app theater channels as ids and names: Popular, New, Rankings, Categories, Anime, Live-Action, VIP and Original+. The channel value for dramabox-theater is the lowercase name (popular, new, rankings, categories, anime, live-action, vip, original). Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-channels",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.channelsResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List DramaBox theater channels",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/drama": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns one DramaBox short drama: title, description, cover, link, language, episode count, lifetime views, follows, tags, genres, listing times, the languages it is available in, the episode list with each episode's number, id, duration, free flag and thumbnail, and related titles. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-drama",
+        "parameters": [
+          {
+            "description": "Title id (digits) from any DramaBox list, or a dramabox.com drama URL",
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-example": "42000028173"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.dramaResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get a DramaBox short drama and its episodes",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/genres": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns the genres DramaBox's browse accepts (Romance, Werewolves, Revenge, Billionaire, ...) as ids and names, read live from DramaBox. Pass a genre id to dramabox-browse. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-genres",
+        "parameters": [
+          {
+            "description": "Site locale, one of: en, ko, zhHans, zh, es, ja, de, in, th, tl, pt, fr, ar, it (in is Indonesian); defaults to en. Each locale has its own title library",
+            "enum": [
+              "en",
+              "ko",
+              "zhHans",
+              "zh",
+              "es",
+              "ja",
+              "de",
+              "in",
+              "th",
+              "tl",
+              "pt",
+              "fr",
+              "ar",
+              "it"
+            ],
+            "in": "query",
+            "name": "language",
+            "type": "string",
+            "x-example": "ja"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.genresResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List DramaBox genres",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/home": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns DramaBox's (dramabox.com) home page: the featured short dramas and the three curated shelves (Trending, Must-sees, Hidden gems), each title with its id, title, description, cover, DramaBox link, episode count, tags, genres and the view count as the site prints it. Use dramabox-more for a whole shelf. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-home",
+        "parameters": [
+          {
+            "description": "Site locale, one of: en, ko, zhHans, zh, es, ja, de, in, th, tl, pt, fr, ar, it (in is Indonesian); defaults to en. Each locale has its own title library",
+            "enum": [
+              "en",
+              "ko",
+              "zhHans",
+              "zh",
+              "es",
+              "ja",
+              "de",
+              "in",
+              "th",
+              "tl",
+              "pt",
+              "fr",
+              "ar",
+              "it"
+            ],
+            "in": "query",
+            "name": "language",
+            "type": "string",
+            "x-example": "ja"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.homeResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List DramaBox's featured titles and shelves",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/more": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns one page of 18 titles from a DramaBox curated shelf (trending, must-sees or hidden-gems): id, title, description, cover, link, episode count, tags, genres and displayed views, with the page and total page count. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-more",
+        "parameters": [
+          {
+            "description": "Curated shelf: trending, must-sees or hidden-gems",
+            "enum": [
+              "trending",
+              "must-sees",
+              "hidden-gems"
+            ],
+            "in": "query",
+            "name": "position",
+            "required": true,
+            "type": "string",
+            "x-example": "trending"
+          },
+          {
+            "description": "Page number, 1 to 1000; defaults to 1. Each page holds 18 titles",
+            "in": "query",
+            "name": "page",
+            "type": "integer",
+            "x-example": 2
+          },
+          {
+            "description": "Site locale, one of: en, ko, zhHans, zh, es, ja, de, in, th, tl, pt, fr, ar, it (in is Indonesian); defaults to en. Each locale has its own title library",
+            "enum": [
+              "en",
+              "ko",
+              "zhHans",
+              "zh",
+              "es",
+              "ja",
+              "de",
+              "in",
+              "th",
+              "tl",
+              "pt",
+              "fr",
+              "ar",
+              "it"
+            ],
+            "in": "query",
+            "name": "language",
+            "type": "string",
+            "x-example": "ja"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.moreResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get a whole DramaBox curated shelf",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/performer": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns one DramaBox performer from the Android app API: name, gender, avatar, video count, follow flag, and one page of the titles they appear in (each with id, title, description, cover, website link, episode count, tags with their tag ids, protagonist, library flag and listing times). Get performer ids from dramabox-search or dramabox-suggest's people results. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-performer",
+        "parameters": [
+          {
+            "description": "Performer id from dramabox-search or dramabox-suggest's people results",
+            "in": "query",
+            "name": "performer_id",
+            "required": true,
+            "type": "integer",
+            "x-example": 29450
+          },
+          {
+            "description": "Page number, 1 to 1000; defaults to 1",
+            "in": "query",
+            "name": "page",
+            "type": "integer",
+            "x-example": 1
+          },
+          {
+            "description": "Page size, 1 to 20; defaults to 10",
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "x-example": 10
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.performerResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get a DramaBox performer and their titles",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/rank": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns one DramaBox ranking list from the DramaBox Android app API: the available tabs (Most Trending, Top Searched, New Releases) and 20 ranked titles, each with its id, title, description, cover, website link, episode count, tags, protagonist, rank position, hot metric, library flag and listing times. Pass a tab's type as rank_type to read that tab. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-rank",
+        "parameters": [
+          {
+            "description": "Ranking tab: 1 (Most Trending), 2 (Top Searched), 3 (New Releases); omit for the default tab",
+            "enum": [
+              1,
+              2,
+              3
+            ],
+            "in": "query",
+            "name": "rank_type",
+            "type": "integer",
+            "x-example": 2
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.rankResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get a DramaBox ranking list",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/recommend": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns one page of DramaBox's own \"You Might Like\" recommendation feed from the Android app API: the feed title and its titles, each with id, title, description, cover, website link, episode count, tags with their tag ids, protagonist, library flag and listing times. The upstream page size is fixed, so page is the only paging control. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-recommend",
+        "parameters": [
+          {
+            "description": "Page number, 1 to 1000; defaults to 1",
+            "in": "query",
+            "name": "page",
+            "type": "integer",
+            "x-example": 1
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.recommendResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get a page of DramaBox's recommendation feed",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/search": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Searches the DramaBox Android app API and returns one page of mixed results: book rows (id, title, description, cover, website link, tags, protagonist) and performer rows (id, name, avatar, series count), plus an is_more flag for the next page. The keyword is trimmed and truncated to 80 characters like the app; sort selects one of the app's result orderings. Performer ids can be passed to dramabox-performer. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-search",
+        "parameters": [
+          {
+            "description": "Search text, trimmed and truncated to 80 characters",
+            "in": "query",
+            "name": "keyword",
+            "required": true,
+            "type": "string",
+            "x-example": "love"
+          },
+          {
+            "default": 1,
+            "description": "One-based result page",
+            "in": "query",
+            "maximum": 1000,
+            "minimum": 1,
+            "name": "page",
+            "type": "integer"
+          },
+          {
+            "default": 20,
+            "description": "Results per page",
+            "in": "query",
+            "maximum": 50,
+            "minimum": 1,
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "description": "Upstream result ordering mode; omit for the app default",
+            "enum": [
+              1,
+              2,
+              3
+            ],
+            "in": "query",
+            "name": "sort",
+            "type": "integer",
+            "x-example": 1
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.searchResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Search DramaBox titles and performers",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/suggest": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns the DramaBox Android app API's autocomplete suggestions for a partial query: book rows (kind \"book\", cover_url) and performer rows (kind \"actor\", avatar, series count). The keyword is trimmed and truncated to 80 characters like the app; a query with no match returns an empty items list. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-suggest",
+        "parameters": [
+          {
+            "description": "Partial search text, trimmed and truncated to 80 characters",
+            "in": "query",
+            "name": "keyword",
+            "required": true,
+            "type": "string",
+            "x-example": "lov"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.suggestResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get DramaBox search-box suggestions",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/tag": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns one page of DramaBox titles carrying a tag, as the Android app shows them: each title's id, title, description, cover, website link, episode count, tags with their tag ids, protagonist, library flag and listing times, plus the tag's own name. Get tag ids from any title result's tag_refs (dramabox-rank, dramabox-search, dramabox-category-books and the other list endpoints all expose them). An unknown tag id returns an empty list rather than an error. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-tag",
+        "parameters": [
+          {
+            "description": "Tag id from any title result's tag_refs",
+            "in": "query",
+            "name": "tag_id",
+            "required": true,
+            "type": "integer",
+            "x-example": 1379
+          },
+          {
+            "description": "Page number, 1 to 1000; defaults to 1",
+            "in": "query",
+            "name": "page",
+            "type": "integer",
+            "x-example": 1
+          },
+          {
+            "description": "Page size, 1 to 50; defaults to 20",
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "x-example": 20
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.tagResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List the DramaBox titles carrying a tag",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/theater": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns one page of a DramaBox app theater channel: the channel, its titled shelves (each with styles and 10 to 20 titles), poster banners and search hot words. Each title carries its id, title, description, cover, website link, episode count, tags with tag ids, protagonist, play count, library flag and listing times. Channel values are the lowercase names from dramabox-channels. An empty feed is a valid answer. Only public catalog metadata and poster images are read; no playable video is returned.",
+        "operationId": "dramabox-theater",
+        "parameters": [
+          {
+            "description": "Theater channel: popular, new, rankings, categories, anime, live-action, vip or original",
+            "enum": [
+              "popular",
+              "new",
+              "rankings",
+              "categories",
+              "anime",
+              "live-action",
+              "vip",
+              "original"
+            ],
+            "in": "query",
+            "name": "channel",
+            "required": true,
+            "type": "string",
+            "x-example": "popular"
+          },
+          {
+            "description": "Page number, 1 to 1000; defaults to 1",
+            "in": "query",
+            "name": "page",
+            "type": "integer",
+            "x-example": 1
+          },
+          {
+            "description": "Titles per paged block, 1 to 20; defaults to 10",
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "x-example": 10
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.theaterResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get a DramaBox theater channel feed",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    },
+    "/dramabox/trending": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns the DramaBox Android app API's search landing page: the hot, trending and new-release title lists, the ranking tabs (pass a tab's type to dramabox-rank as rank_type) and the app's preset search keyword. Takes no parameters. Only public catalog metadata is read; no playable video is returned.",
+        "operationId": "dramabox-trending",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dramabox.trendingResponseDoc"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get DramaBox's search landing feeds",
+        "tags": [
+          "dramabox"
+        ]
+      }
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "ApiKeyAuth": {
+      "in": "header",
+      "name": "x-api-key",
+      "type": "apiKey"
+    }
+  },
+  "swagger": "2.0",
+  "tags": [
+    {
+      "name": "dramabox"
+    }
+  ]
+}

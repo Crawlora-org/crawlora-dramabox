@@ -1,0 +1,944 @@
+{
+  "platform": "dramabox",
+  "operationCount": 16,
+  "operationIds": [
+    "dramabox-browse",
+    "dramabox-categories",
+    "dramabox-category-books",
+    "dramabox-channels",
+    "dramabox-drama",
+    "dramabox-genres",
+    "dramabox-home",
+    "dramabox-more",
+    "dramabox-performer",
+    "dramabox-rank",
+    "dramabox-recommend",
+    "dramabox-search",
+    "dramabox-suggest",
+    "dramabox-tag",
+    "dramabox-theater",
+    "dramabox-trending"
+  ],
+  "methods": {
+    "browse": "dramabox-browse",
+    "categories": "dramabox-categories",
+    "category_books": "dramabox-category-books",
+    "channels": "dramabox-channels",
+    "drama": "dramabox-drama",
+    "genres": "dramabox-genres",
+    "home": "dramabox-home",
+    "more": "dramabox-more",
+    "performer": "dramabox-performer",
+    "rank": "dramabox-rank",
+    "recommend": "dramabox-recommend",
+    "search": "dramabox-search",
+    "suggest": "dramabox-suggest",
+    "tag": "dramabox-tag",
+    "theater": "dramabox-theater",
+    "trending": "dramabox-trending"
+  },
+  "operations": {
+    "dramabox-browse": {
+      "id": "dramabox-browse",
+      "method": "GET",
+      "path": "/dramabox/browse",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "genre_id",
+          "in": "query",
+          "type": "integer"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "type": "integer"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "type": "string",
+          "enum": [
+            "en",
+            "ko",
+            "zhHans",
+            "zh",
+            "es",
+            "ja",
+            "de",
+            "in",
+            "th",
+            "tl",
+            "pt",
+            "fr",
+            "ar",
+            "it"
+          ]
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Genre id from dramabox-genres; 0 or omitted browses all titles",
+          "in": "query",
+          "name": "genre_id",
+          "type": "integer",
+          "x-example": 161
+        },
+        {
+          "description": "Page number, 1 to 1000; defaults to 1. Each page holds 12 titles",
+          "in": "query",
+          "name": "page",
+          "type": "integer",
+          "x-example": 2
+        },
+        {
+          "description": "Site locale, one of: en, ko, zhHans, zh, es, ja, de, in, th, tl, pt, fr, ar, it (in is Indonesian); defaults to en. Each locale has its own title library",
+          "enum": [
+            "en",
+            "ko",
+            "zhHans",
+            "zh",
+            "es",
+            "ja",
+            "de",
+            "in",
+            "th",
+            "tl",
+            "pt",
+            "fr",
+            "ar",
+            "it"
+          ],
+          "in": "query",
+          "name": "language",
+          "type": "string",
+          "x-example": "ja"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-categories": {
+      "id": "dramabox-categories",
+      "method": "GET",
+      "path": "/dramabox/categories",
+      "pathParams": [],
+      "queryParams": [],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-category-books": {
+      "id": "dramabox-category-books",
+      "method": "GET",
+      "path": "/dramabox/category-books",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "language",
+          "in": "query",
+          "type": "string"
+        },
+        {
+          "name": "production",
+          "in": "query",
+          "type": "string",
+          "enum": [
+            "3",
+            "1",
+            "2"
+          ]
+        },
+        {
+          "name": "dub",
+          "in": "query",
+          "type": "string",
+          "enum": [
+            "1",
+            "0"
+          ]
+        },
+        {
+          "name": "genre",
+          "in": "query",
+          "type": "string"
+        },
+        {
+          "name": "genre_2",
+          "in": "query",
+          "type": "string"
+        },
+        {
+          "name": "sort",
+          "in": "query",
+          "type": "string",
+          "enum": [
+            "1",
+            "2",
+            "3"
+          ]
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "type": "integer"
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "type": "integer"
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Language/origin value from dramabox-categories' language group, e.g. 美国 (Local) or 中国 (Chinese)",
+          "in": "query",
+          "name": "language",
+          "type": "string",
+          "x-example": "美国"
+        },
+        {
+          "description": "Production-type value from dramabox-categories' production group: 3 (AI Drama), 1 (Live-Action), 2 (Anime)",
+          "enum": [
+            "3",
+            "1",
+            "2"
+          ],
+          "in": "query",
+          "name": "production",
+          "type": "string",
+          "x-example": "1"
+        },
+        {
+          "description": "Dub-mode value from dramabox-categories' dub group: 1 (Dubbed), 0 (Subtitles Only)",
+          "enum": [
+            "1",
+            "0"
+          ],
+          "in": "query",
+          "name": "dub",
+          "type": "string",
+          "x-example": "1"
+        },
+        {
+          "description": "Genre value from dramabox-categories' genre_1 group, e.g. 1357 (Romance) or 1361 (Strong Heroine)",
+          "in": "query",
+          "name": "genre",
+          "type": "string",
+          "x-example": "1357"
+        },
+        {
+          "description": "Genre value from dramabox-categories' genre_2 group, e.g. 1392 (Second Chance) or 1359 (BL); multi-tag values such as 1324,1362 are one value",
+          "in": "query",
+          "name": "genre_2",
+          "type": "string",
+          "x-example": "1392"
+        },
+        {
+          "description": "Sort value from dramabox-categories' sort group: 1 (Trending), 2 (Latest), 3 (Unwatched)",
+          "enum": [
+            "1",
+            "2",
+            "3"
+          ],
+          "in": "query",
+          "name": "sort",
+          "type": "string",
+          "x-example": "1"
+        },
+        {
+          "description": "Page number, 1 to 1000; defaults to 1",
+          "in": "query",
+          "name": "page",
+          "type": "integer",
+          "x-example": 1
+        },
+        {
+          "description": "Titles per page, 1 to 50; defaults to 20",
+          "in": "query",
+          "name": "limit",
+          "type": "integer",
+          "x-example": 20
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-channels": {
+      "id": "dramabox-channels",
+      "method": "GET",
+      "path": "/dramabox/channels",
+      "pathParams": [],
+      "queryParams": [],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-drama": {
+      "id": "dramabox-drama",
+      "method": "GET",
+      "path": "/dramabox/drama",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "id",
+          "in": "query",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Title id (digits) from any DramaBox list, or a dramabox.com drama URL",
+          "in": "query",
+          "name": "id",
+          "required": true,
+          "type": "string",
+          "x-example": "42000028173"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-genres": {
+      "id": "dramabox-genres",
+      "method": "GET",
+      "path": "/dramabox/genres",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "language",
+          "in": "query",
+          "type": "string",
+          "enum": [
+            "en",
+            "ko",
+            "zhHans",
+            "zh",
+            "es",
+            "ja",
+            "de",
+            "in",
+            "th",
+            "tl",
+            "pt",
+            "fr",
+            "ar",
+            "it"
+          ]
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Site locale, one of: en, ko, zhHans, zh, es, ja, de, in, th, tl, pt, fr, ar, it (in is Indonesian); defaults to en. Each locale has its own title library",
+          "enum": [
+            "en",
+            "ko",
+            "zhHans",
+            "zh",
+            "es",
+            "ja",
+            "de",
+            "in",
+            "th",
+            "tl",
+            "pt",
+            "fr",
+            "ar",
+            "it"
+          ],
+          "in": "query",
+          "name": "language",
+          "type": "string",
+          "x-example": "ja"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-home": {
+      "id": "dramabox-home",
+      "method": "GET",
+      "path": "/dramabox/home",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "language",
+          "in": "query",
+          "type": "string",
+          "enum": [
+            "en",
+            "ko",
+            "zhHans",
+            "zh",
+            "es",
+            "ja",
+            "de",
+            "in",
+            "th",
+            "tl",
+            "pt",
+            "fr",
+            "ar",
+            "it"
+          ]
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Site locale, one of: en, ko, zhHans, zh, es, ja, de, in, th, tl, pt, fr, ar, it (in is Indonesian); defaults to en. Each locale has its own title library",
+          "enum": [
+            "en",
+            "ko",
+            "zhHans",
+            "zh",
+            "es",
+            "ja",
+            "de",
+            "in",
+            "th",
+            "tl",
+            "pt",
+            "fr",
+            "ar",
+            "it"
+          ],
+          "in": "query",
+          "name": "language",
+          "type": "string",
+          "x-example": "ja"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-more": {
+      "id": "dramabox-more",
+      "method": "GET",
+      "path": "/dramabox/more",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "position",
+          "in": "query",
+          "type": "string",
+          "required": true,
+          "enum": [
+            "trending",
+            "must-sees",
+            "hidden-gems"
+          ]
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "type": "integer"
+        },
+        {
+          "name": "language",
+          "in": "query",
+          "type": "string",
+          "enum": [
+            "en",
+            "ko",
+            "zhHans",
+            "zh",
+            "es",
+            "ja",
+            "de",
+            "in",
+            "th",
+            "tl",
+            "pt",
+            "fr",
+            "ar",
+            "it"
+          ]
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Curated shelf: trending, must-sees or hidden-gems",
+          "enum": [
+            "trending",
+            "must-sees",
+            "hidden-gems"
+          ],
+          "in": "query",
+          "name": "position",
+          "required": true,
+          "type": "string",
+          "x-example": "trending"
+        },
+        {
+          "description": "Page number, 1 to 1000; defaults to 1. Each page holds 18 titles",
+          "in": "query",
+          "name": "page",
+          "type": "integer",
+          "x-example": 2
+        },
+        {
+          "description": "Site locale, one of: en, ko, zhHans, zh, es, ja, de, in, th, tl, pt, fr, ar, it (in is Indonesian); defaults to en. Each locale has its own title library",
+          "enum": [
+            "en",
+            "ko",
+            "zhHans",
+            "zh",
+            "es",
+            "ja",
+            "de",
+            "in",
+            "th",
+            "tl",
+            "pt",
+            "fr",
+            "ar",
+            "it"
+          ],
+          "in": "query",
+          "name": "language",
+          "type": "string",
+          "x-example": "ja"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-performer": {
+      "id": "dramabox-performer",
+      "method": "GET",
+      "path": "/dramabox/performer",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "performer_id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "type": "integer"
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "type": "integer"
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Performer id from dramabox-search or dramabox-suggest's people results",
+          "in": "query",
+          "name": "performer_id",
+          "required": true,
+          "type": "integer",
+          "x-example": 29450
+        },
+        {
+          "description": "Page number, 1 to 1000; defaults to 1",
+          "in": "query",
+          "name": "page",
+          "type": "integer",
+          "x-example": 1
+        },
+        {
+          "description": "Page size, 1 to 20; defaults to 10",
+          "in": "query",
+          "name": "limit",
+          "type": "integer",
+          "x-example": 10
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-rank": {
+      "id": "dramabox-rank",
+      "method": "GET",
+      "path": "/dramabox/rank",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "rank_type",
+          "in": "query",
+          "type": "integer",
+          "enum": [
+            "1",
+            "2",
+            "3"
+          ]
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Ranking tab: 1 (Most Trending), 2 (Top Searched), 3 (New Releases); omit for the default tab",
+          "enum": [
+            1,
+            2,
+            3
+          ],
+          "in": "query",
+          "name": "rank_type",
+          "type": "integer",
+          "x-example": 2
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-recommend": {
+      "id": "dramabox-recommend",
+      "method": "GET",
+      "path": "/dramabox/recommend",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "page",
+          "in": "query",
+          "type": "integer"
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Page number, 1 to 1000; defaults to 1",
+          "in": "query",
+          "name": "page",
+          "type": "integer",
+          "x-example": 1
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-search": {
+      "id": "dramabox-search",
+      "method": "GET",
+      "path": "/dramabox/search",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "keyword",
+          "in": "query",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "type": "integer"
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "type": "integer"
+        },
+        {
+          "name": "sort",
+          "in": "query",
+          "type": "integer",
+          "enum": [
+            "1",
+            "2",
+            "3"
+          ]
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Search text, trimmed and truncated to 80 characters",
+          "in": "query",
+          "name": "keyword",
+          "required": true,
+          "type": "string",
+          "x-example": "love"
+        },
+        {
+          "default": 1,
+          "description": "One-based result page",
+          "in": "query",
+          "maximum": 1000,
+          "minimum": 1,
+          "name": "page",
+          "type": "integer"
+        },
+        {
+          "default": 20,
+          "description": "Results per page",
+          "in": "query",
+          "maximum": 50,
+          "minimum": 1,
+          "name": "limit",
+          "type": "integer"
+        },
+        {
+          "description": "Upstream result ordering mode; omit for the app default",
+          "enum": [
+            1,
+            2,
+            3
+          ],
+          "in": "query",
+          "name": "sort",
+          "type": "integer",
+          "x-example": 1
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-suggest": {
+      "id": "dramabox-suggest",
+      "method": "GET",
+      "path": "/dramabox/suggest",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "keyword",
+          "in": "query",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Partial search text, trimmed and truncated to 80 characters",
+          "in": "query",
+          "name": "keyword",
+          "required": true,
+          "type": "string",
+          "x-example": "lov"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-tag": {
+      "id": "dramabox-tag",
+      "method": "GET",
+      "path": "/dramabox/tag",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "tag_id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "type": "integer"
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "type": "integer"
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Tag id from any title result's tag_refs",
+          "in": "query",
+          "name": "tag_id",
+          "required": true,
+          "type": "integer",
+          "x-example": 1379
+        },
+        {
+          "description": "Page number, 1 to 1000; defaults to 1",
+          "in": "query",
+          "name": "page",
+          "type": "integer",
+          "x-example": 1
+        },
+        {
+          "description": "Page size, 1 to 50; defaults to 20",
+          "in": "query",
+          "name": "limit",
+          "type": "integer",
+          "x-example": 20
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-theater": {
+      "id": "dramabox-theater",
+      "method": "GET",
+      "path": "/dramabox/theater",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "channel",
+          "in": "query",
+          "type": "string",
+          "required": true,
+          "enum": [
+            "popular",
+            "new",
+            "rankings",
+            "categories",
+            "anime",
+            "live-action",
+            "vip",
+            "original"
+          ]
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "type": "integer"
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "type": "integer"
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Theater channel: popular, new, rankings, categories, anime, live-action, vip or original",
+          "enum": [
+            "popular",
+            "new",
+            "rankings",
+            "categories",
+            "anime",
+            "live-action",
+            "vip",
+            "original"
+          ],
+          "in": "query",
+          "name": "channel",
+          "required": true,
+          "type": "string",
+          "x-example": "popular"
+        },
+        {
+          "description": "Page number, 1 to 1000; defaults to 1",
+          "in": "query",
+          "name": "page",
+          "type": "integer",
+          "x-example": 1
+        },
+        {
+          "description": "Titles per paged block, 1 to 20; defaults to 10",
+          "in": "query",
+          "name": "limit",
+          "type": "integer",
+          "x-example": 10
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "dramabox-trending": {
+      "id": "dramabox-trending",
+      "method": "GET",
+      "path": "/dramabox/trending",
+      "pathParams": [],
+      "queryParams": [],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    }
+  }
+}
